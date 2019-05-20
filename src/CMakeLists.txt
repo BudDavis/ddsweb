@@ -11,6 +11,8 @@
 #
 cmake_minimum_required(VERSION 3.5)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 if (NOT TARGET CycloneDDS::ddsc)
     # Find the CycloneDDS package. If it is not in a default location, try
     # finding it relative to the example where it most likely resides.
@@ -26,6 +28,12 @@ idlc_generate(HelloWorldData_lib "HelloWorldData.idl")
 # Both executables have only one related source file.
 add_executable(HelloworldPublisher publisher.c)
 add_executable(HelloworldSubscriber subscriber.c)
+
+include_directories("../websocketpp/")
+
+add_executable (subprotocol_server subprotocol_server.cpp)
+target_link_libraries(subprotocol_server -lboost_system -lrt -lpthread )
+
 
 # Both executables need to be linked to the idl data type library and
 # the ddsc API library.
